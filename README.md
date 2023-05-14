@@ -31,5 +31,5 @@ ORAU Hackathon 2023 - WebXR with mutli user collaboration
 5. Run (Server)
    ```sh
    cd server
-   npm start
+   npm startDev
    ```

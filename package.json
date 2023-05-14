@@ -12,6 +12,7 @@
     "vite": "^4.3.2"
   },
   "dependencies": {
+    "colyseus.js": "^0.14.13",
     "three": "^0.152.2"
   }
 }

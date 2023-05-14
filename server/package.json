@@ -35,6 +35,7 @@
     "@colyseus/monitor": "^0.14.22",
     "colyseus": "^0.14.20",
     "cors": "^2.8.5",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "ts-node-dev": "^1.0.0-pre.63"
   }
 }

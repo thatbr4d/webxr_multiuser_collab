@@ -33,4 +33,5 @@ ORAU Hackathon 2023 - WebXR with mutli user collaboration
    cd server
    npm run startDev
    ```
-6. 
+6.
+7.

@@ -3,8 +3,9 @@ import { ARButton } from "three/addons/webxr/ARButton.js";
 
 let scene;
 let camera;
-let cube;
 let renderer;
+
+let collaborators = [];
 
 export function ARInit() {
   scene = new THREE.Scene();
@@ -21,12 +22,6 @@ export function ARInit() {
 
   document.body.appendChild(renderer.domElement);
 
-  const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  cube = new THREE.Mesh(geometry, material);
-  cube.position.set(0, 0, -10);
-  scene.add(cube);
-
   camera.position.z = 5;
 
   document.body.appendChild(
@@ -37,8 +32,43 @@ export function ARInit() {
 export function ARAnimate() {
   requestAnimationFrame(ARAnimate);
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-
   renderer.render(scene, camera);
 }
+
+export function AddCollaborator(key, modelIndex, name) {
+  let geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+  let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  let cube = new THREE.Mesh(geometry, material);
+  cube.name = key;
+
+  let collab = { id: key, model: cube, name: name };
+  collab.model.position.set(0, 0, -10);
+
+  scene.add(collab.model);
+  collaborators.push(collab);
+}
+
+export function RemoveCollaborator(key) {
+  removeObject3D(scene.getObjectByName(key));
+
+  let collab = collaborators.filter(x => x.id == key);
+  collaborators.pop(collab);
+}
+
+function removeObject3D(object3D) {
+  if (!(object3D instanceof THREE.Object3D)) return false;
+
+  if (object3D.geometry) object3D.geometry.dispose();
+
+  if (object3D.material) {
+      if (object3D.material instanceof Array) {
+          object3D.material.forEach(material => material.dispose());
+      } else {
+          object3D.material.dispose();
+      }
+  }
+  object3D.removeFromParent();
+  
+  return true;
+}
+

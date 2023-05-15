@@ -1,4 +1,5 @@
 import * as Colyseus from "colyseus.js";
+import { AddCollaborator, RemoveCollaborator } from "./arsample";
 
 export default class Client {
   createBtn;
@@ -17,6 +18,7 @@ export default class Client {
 
     this.codeInput = document.getElementById("RoomCode");
     this.roomInfo = document.getElementById("RoomInfo");
+    this.userName = document.getElementById("UserName");
   }
 
   get codeInputVal() {
@@ -26,13 +28,11 @@ export default class Client {
   async joinRoom(code) {
     if (code !== undefined && code !== "") {
       this.client
-        .joinById(code)
+        .joinById(code, {name: this.userName.value})
         .then((room) => {
           console.log(room);
-          console.log(room.sessionId, "joined", room.name);
 
-          this.createJoinRoomWrapper.style.display = "none";
-          this.roomInfo.innerHTML = room.id;
+          this.initializeRoom(room);
         })
         .catch((e) => {
           console.log("JOIN ERROR", e);
@@ -41,13 +41,11 @@ export default class Client {
       return true;
     } else {
       this.client
-        .create("ar_room")
+        .create("ar_room", {name: this.userName.value})
         .then((room) => {
           console.log(room);
-          console.log(room.sessionId, "joined", room.name);
 
-          this.createJoinRoomWrapper.style.display = "none";
-          this.roomInfo.innerHTML = room.id;
+          this.initializeRoom(room);
         })
         .catch((e) => {
           console.log("JOIN ERROR", e);
@@ -56,4 +54,24 @@ export default class Client {
       return true;
     }
   }
+
+  initializeRoom(room) {
+    this.createJoinRoomWrapper.style.display = "none";
+    this.roomInfo.innerHTML = room.id;
+    
+    this.myKey = room.sessionId;
+
+    room.state.collaborators.onAdd = function (collaborator, key) {
+      if(key !== room.sessionId)
+        AddCollaborator(key, collaborator.modelIndex, collaborator.userName);
+    }
+
+    room.state.collaborators.onRemove = function (collaborator, key) {
+      if(key !== room.sessionId)
+        RemoveCollaborator(key);
+    }
+
+  }
+  
+
 }

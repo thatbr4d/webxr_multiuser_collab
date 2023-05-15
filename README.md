@@ -33,5 +33,4 @@ ORAU Hackathon 2023 - WebXR with mutli user collaboration
    cd server
    npm run startDev
    ```
-6.
-7.
+6. Boryla - When we are done with the hackathon go to control panel > credential manager > delete my personal git credential so I can push to ORAU git repo.

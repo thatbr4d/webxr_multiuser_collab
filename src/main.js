@@ -1,14 +1,18 @@
-import * as THREE from "three";
-import * as Colyseus from "colyseus.js";
+import Client from "./client";
+import { ARInit, ARAnimate } from "./arsample";
 
-var client = new Colyseus.Client("wss://webxrcollab.azurewebsites.net:2567");
+let client = new Client();
 
-client
-  .joinOrCreate("ar_room")
-  .then((room) => {
-    console.log(room);
-    console.log(room.sessionId, "joined", room.name);
-  })
-  .catch((e) => {
-    console.log("JOIN ERROR", e);
-  });
+client.createBtn.onclick = async function (e) {
+  if (await client.joinRoom()) {
+    ARInit();
+    ARAnimate();
+  }
+};
+
+client.joinBtn.onclick = async function (e) {
+  if (await client.joinRoom(client.codeInputVal)) {
+    ARInit();
+    ARAnimate();
+  }
+};

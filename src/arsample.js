@@ -1,9 +1,11 @@
 import * as THREE from "three";
 import { ARButton } from "three/addons/webxr/ARButton.js";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 let scene;
 let camera;
 let renderer;
+let loader;
 
 let collaborators = [];
 
@@ -12,22 +14,24 @@ export function ARInit() {
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
-    0.1,
-    1000
+    0.01,
+    40
   );
+
+
+  // setting alpha to true makes the phone screen have light. alpha to false is just a black screen.
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.xr.enabled = true;
 
   const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
 
-  // setting alpha to true makes the phone screen have light. alpha to false is just a black screen.
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.xr.enabled = true;
-
   document.body.appendChild(renderer.domElement);
 
-  camera.position.z = 5;
+  //camera.position.z = 5;
 
   document.body.appendChild(
     ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] })

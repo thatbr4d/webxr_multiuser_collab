@@ -16,7 +16,12 @@ export function ARInit() {
     1000
   );
 
-  renderer = new THREE.WebGLRenderer();
+  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+  light.position.set(0.5, 1, 0.25);
+  scene.add(light);
+
+  // setting alpha to true makes the phone screen have light. alpha to false is just a black screen.
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
 
@@ -36,6 +41,7 @@ export function ARAnimate() {
 }
 
 export function AddCollaborator(key, modelIndex, name) {
+  console.log("add collab");
   let geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
   let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
   let cube = new THREE.Mesh(geometry, material);
@@ -61,14 +67,14 @@ function removeObject3D(object3D) {
   if (object3D.geometry) object3D.geometry.dispose();
 
   if (object3D.material) {
-      if (object3D.material instanceof Array) {
-          object3D.material.forEach(material => material.dispose());
-      } else {
-          object3D.material.dispose();
-      }
+    if (object3D.material instanceof Array) {
+      object3D.material.forEach(material => material.dispose());
+    } else {
+      object3D.material.dispose();
+    }
   }
   object3D.removeFromParent();
-  
+
   return true;
 }
 

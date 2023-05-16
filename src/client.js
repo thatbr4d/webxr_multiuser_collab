@@ -9,7 +9,7 @@ export default class Client {
   constructor() {
     //var client = new Colyseus.Client("wss://webxrcollab.azurewebsites.net:2567");
     this.client = new Colyseus.Client("ws://localhost:2567");
-
+    this.body = document.body;
     this.createJoinRoomWrapper = document.getElementById(
       "CreateJoinRoomWrapper"
     );
@@ -76,6 +76,7 @@ export default class Client {
 
   initializeRoom(room) {
     this.createJoinRoomWrapper.style.display = "none";
+    this.body.style.backgroundColor = "black";
     this.roomCodeDisplay.innerText = room.id;
     this.goBack.classList.remove("d-none");
     this.roomInfo.classList.remove("d-none");

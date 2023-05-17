@@ -112,7 +112,7 @@ export function AddCollaborator(key, modelIndex, name) {
   scene.add(myText);
 
   myText.sync();
-  group.add(cube);
+  //group.add(cube);
 }
 
 export function RemoveCollaborator(key) {

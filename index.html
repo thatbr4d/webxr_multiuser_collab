@@ -10,16 +10,19 @@
 		  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 		<style>
 			body { margin: 0; }
+			.activeAvatar {
+        		border: 1px solid red;
+    		}
 		</style>
 	</head>
 	<body>
 		<div id="CreateJoinRoomWrapper" class="container" style="position: absolute; z-index: 5;">
 			<div class="row mb-3">
 				<div class="col">
-					<span class="fw-bold">Select your avatar (TODO)</span>
+					<span class="fw-bold">Select your avatar</span>
 					<ul class="list-group list-group-horizontal position-relative overflow-auto w-75">
-						<li class="list-group-item">Item 1</li>
-						<li class="list-group-item">Item 2</li>
+						<li class="list-group-item activeAvatar" data-model="shiba"><a href="#"><img src="images/shiba.PNG" width="100px" /></a></li>
+						<li class="list-group-item" data-model="sugar_teddy_bear"><a href="#"><img src="images/pinkteddy.PNG" width="100px" /></a></li>
 						<li class="list-group-item">Item 3</li>
 						<li class="list-group-item">Item 4</li>
 						<li class="list-group-item">Item 5</li>

@@ -7,10 +7,12 @@ let scene;
 let camera;
 let renderer;
 let loader;
+let selectedModel;
 
-let collaborators = [];
+export function ARInit(model) {
+  selectedModel = model;
+  loader = new GLTFLoader();
 
-export function ARInit() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
     75,
@@ -47,27 +49,24 @@ export function ARAnimate() {
 
 export function AddCollaborator(key, modelIndex, name) {
   console.log("add collab");
-  const HEIGHT = .5;
-  const WIDTH = .5;
+  const MODEL_WIDTH = 1;
+  const MODEL_HEIGHT = 1;
 
-  let geometry = new THREE.BoxGeometry(0.5, HEIGHT, 0.5);
-  let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  let cube = new THREE.Mesh(geometry, material);
-  cube.name = key;
+  loader.load('../../models/' + selectedModel + '/scene.gltf', function (gltf) {
+    gltf.scene.scale.set(MODEL_WIDTH, MODEL_HEIGHT, 1);
+    gltf.scene.position.set(0, 0, -10);
+	  scene.add( gltf.scene );
+  }, undefined, function ( error ) {
+	  console.error( error );
+  });
 
   const myText = new Text();
   myText.name = "text" + key;
   myText.text = name;
   myText.fontSize = .5;
-  myText.position.set(WIDTH / 2, HEIGHT, -9);
+  myText.position.set(MODEL_WIDTH / 2, MODEL_HEIGHT, -9);
 
-  let collab = { id: key, model: cube, name: name, textModel: myText };
-  collab.model.position.set(0, 0, -10);
-
-  scene.add(collab.model);
   scene.add(myText);
-
-  collaborators.push(collab);
 
   myText.sync();
 }
@@ -75,9 +74,6 @@ export function AddCollaborator(key, modelIndex, name) {
 export function RemoveCollaborator(key) {
   removeObject3D(scene.getObjectByName(key));
   removeObject3D(scene.getObjectByName("text" + key));
-
-  let collab = collaborators.filter(x => x.id == key);
-  collaborators.pop(collab);
 }
 
 function removeObject3D(object3D) {

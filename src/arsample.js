@@ -5,7 +5,6 @@ import { Text } from 'troika-three-text';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 
-let collaborators = [];
 let scene;
 let camera;
 let renderer;
@@ -16,11 +15,9 @@ let controllerGrip1, controllerGrip2;
 let raycaster;
 
 let controls, group;
-let selectedModel;
 
 const tempMatrix = new THREE.Matrix4();
-export function ARInit(model) {
-  selectedModel = model;
+export function ARInit() {
   loader = new GLTFLoader();
 
   scene = new THREE.Scene();
@@ -30,7 +27,6 @@ export function ARInit(model) {
     0.01,
     40
   );
-
 
   // setting alpha to true makes the phone screen have light. alpha to false is just a black screen.
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -90,14 +86,15 @@ export function ARAnimate() {
   renderer.setAnimationLoop(render);
 }
 
-export function AddCollaborator(key, modelIndex, name) {
+export function AddCollaborator(key, modelName, name) {
   console.log("add collab");
   const MODEL_WIDTH = 1;
   const MODEL_HEIGHT = 1;
 
-  loader.load('../../models/' + selectedModel + '/scene.gltf', function (gltf) {
+  loader.load('../../models/' + modelName + '/scene.gltf', function (gltf) {
     gltf.scene.scale.set(MODEL_WIDTH, MODEL_HEIGHT, 1);
     gltf.scene.position.set(0, 0, -10);
+    gltf.scene.name = key;
 	  scene.add( gltf.scene );
   }, undefined, function ( error ) {
 	  console.error( error );

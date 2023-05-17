@@ -12,6 +12,7 @@ export class ARRoom extends Room<ARRoomState> {
   onJoin(client: Client, options: any) {
     let collab = new Collaborator();
     collab.userName = options.name;
+    collab.modelName = options.modelName;
 
     this.state.collaborators.set(client.sessionId, collab);
 

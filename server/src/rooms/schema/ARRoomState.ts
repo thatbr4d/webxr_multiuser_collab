@@ -1,7 +1,7 @@
 import { Schema, Context, MapSchema, type } from "@colyseus/schema";
 
 export class Collaborator extends Schema {
-  @type("number") modelIndex: number = 0;
+  @type("string") modelName: string = "";
   @type("string") userName: string = "";
 }
 

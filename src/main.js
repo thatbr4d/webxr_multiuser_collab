@@ -1,13 +1,11 @@
 import Client from "./client";
 import { ARInit, ARAnimate } from "./arsample";
 
-let selectedModel = "shiba";
-
 let client = new Client();
 
 client.createBtn.onclick = async function (e) {
   if (await client.joinRoom()) {
-    ARInit(selectedModel);
+    ARInit();
     ARAnimate();
   }
 };
@@ -51,7 +49,7 @@ $(document).ready(function () {
   $('li').click(function () {
     $('li').removeClass('activeAvatar');
     $(this).addClass('activeAvatar');
-    selectedModel = $(this).data('model');
+    client.modelName = $(this).data('model');
   });
 
 });
@@ -72,7 +70,7 @@ $(document).on('click', '.btnJoinRoom', function () {
 
 async function joinRoom(roomCode) {
   if (await client.joinRoom(client.codeInputVal)) {
-    ARInit(selectedModel);
+    ARInit();
     ARAnimate();
   }
 }

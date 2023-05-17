@@ -24,14 +24,15 @@ export default class Client {
     this.roomInfo = document.getElementById("RoomInfo");
     this.roomCodeDisplay = document.getElementById("RoomCodeDisplay");
     this.userName = document.getElementById("UserName");
+    this.modelName = "shiba";
   }
+
+
 
   get codeInputVal() {
     //return this.codeInput.value;
     return this.codeInput;
   }
-
-
 
   async getRooms() {
     var roomInfo = [];
@@ -47,7 +48,7 @@ export default class Client {
   async joinRoom(code) {
     if (code !== undefined && code !== "") {
       this.client
-        .joinById(code, { name: this.userName.value })
+        .joinById(code, { name: this.userName.value, modelName: this.modelName })
         .then((room) => {
           console.log(room);
 
@@ -60,7 +61,7 @@ export default class Client {
       return true;
     } else {
       this.client
-        .create("ar_room", { name: this.userName.value })
+        .create("ar_room", { name: this.userName.value, modelName: this.modelName })
         .then((room) => {
           console.log(room);
 
@@ -85,7 +86,7 @@ export default class Client {
 
     room.state.collaborators.onAdd = function (collaborator, key) {
       if (key !== room.sessionId)
-        AddCollaborator(key, collaborator.modelIndex, collaborator.userName);
+        AddCollaborator(key, collaborator.modelName, collaborator.userName);
     }
 
     room.state.collaborators.onRemove = function (collaborator, key) {

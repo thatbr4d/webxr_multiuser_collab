@@ -40,9 +40,9 @@ export function ARInit() {
 }
 
 export function ARAnimate() {
-  requestAnimationFrame(ARAnimate);
-
-  renderer.render(scene, camera);
+  // requestAnimationFrame(ARAnimate);
+  // renderer.render(scene, camera);
+  renderer.setAnimationLoop(render);
 }
 
 export function AddCollaborator(key, modelIndex, name) {
@@ -97,3 +97,12 @@ function removeObject3D(object3D) {
   return true;
 }
 
+// the callback from 'setAnimationLoop' can also return a timestamp
+// and an XRFrame, which provides access to the information needed in
+// order to render a single frame of animation for an XRSession describing
+// a VR or AR sccene.
+function render(timestamp, frame) {
+  if (frame) {
+    renderer.render(scene, camera);
+  }
+}

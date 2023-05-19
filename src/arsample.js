@@ -74,7 +74,7 @@ export function ARInit() {
   document.body.appendChild(renderer.domElement);
 
   //camera.position.z = 5;
-
+  
   document.body.appendChild(
     ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] })
   );
@@ -86,15 +86,21 @@ export function ARAnimate() {
   renderer.setAnimationLoop(render);
 }
 
-export function AddCollaborator(key, modelName, name) {
+export function AddCollaborator(key, modelName, name, move) {
   console.log("add collab");
   const MODEL_WIDTH = 1;
   const MODEL_HEIGHT = 1;
 
   loader.load('../../models/' + modelName + '/scene.gltf', function (gltf) {
-    gltf.scene.scale.set(MODEL_WIDTH, MODEL_HEIGHT, 1);
-    gltf.scene.position.set(0, 0, -10);
+    setUpModel(gltf, modelName);
+    if (move)
+      gltf.scene.position.set(3, 0, -10);
+    else {
+      //gltf.scene.position.set(0, 0, -10);
+      
+    }
     gltf.scene.name = key;
+
 	  scene.add( gltf.scene );
   }, undefined, function ( error ) {
 	  console.error( error );
@@ -181,4 +187,43 @@ function getIntersections(controller) {
   raycaster.ray.direction.set(0, 0, - 1).applyMatrix4(tempMatrix);
 
   return raycaster.intersectObjects(group.children, false);
+}
+
+function setUpModel(gltf, modelName) {
+  switch (modelName) {
+    case "cute_rabbit":
+      gltf.scene.scale.set(.25, .25, .25);
+      break;
+    case "shiba":
+      gltf.scene.scale.set(1.75, 1.75, 1.75);
+      break;
+    case "cute_squid":
+      gltf.scene.scale.set(1.75, 1.75, 1.75);
+      gltf.scene.rotation.y = 9.5;
+      break;
+    case "sugar_teddy_bear":
+      gltf.scene.position.set(0, -1.5, -10);
+      gltf.scene.scale.set(5, 5, 5);
+      break;
+    case "cute_little_duck":
+      gltf.scene.scale.set(5, 5, 5);
+      gltf.scene.position.set(0, -1.5, -10);
+      break;
+    case "cute_fox":
+      gltf.scene.position.set(0, -.75, -10);
+      break;
+    case "cute_cat_in_cute_banana":
+      gltf.scene.scale.set(2, 2, 2);
+      gltf.scene.position.set(0, -10, -10);
+      break;
+    case "cute_axolotl":
+      gltf.scene.rotation.y = 10.75;
+      break;
+    default:
+      gltf.scene.scale.set(1,1,1);
+  }
+
+  if (modelName !== "sugar_teddy_bear" && modelName !== "cute_little_duck" && modelName !== "cute_fox" && modelName !== "cute_cat_in_cute_banana")
+    gltf.scene.position.set(0, 0, -10);
+
 }

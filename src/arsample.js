@@ -74,7 +74,7 @@ export function ARInit() {
   document.body.appendChild(renderer.domElement);
 
   //camera.position.z = 5;
-  
+
   document.body.appendChild(
     ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] })
   );
@@ -86,19 +86,13 @@ export function ARAnimate() {
   renderer.setAnimationLoop(render);
 }
 
-export function AddCollaborator(key, modelName, name, move) {
+export function AddCollaborator(key, modelName, name) {
   console.log("add collab");
   const MODEL_WIDTH = 1;
   const MODEL_HEIGHT = 1;
 
   loader.load('../../models/' + modelName + '/scene.gltf', function (gltf) {
     setUpModel(gltf, modelName);
-    if (move)
-      gltf.scene.position.set(3, 0, -10);
-    else {
-      //gltf.scene.position.set(0, 0, -10);
-      
-    }
     gltf.scene.name = key;
 
 	  scene.add( gltf.scene );
